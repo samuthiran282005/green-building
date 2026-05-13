@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoConstruct Pro - Green Building Solutions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-green: #5b60e6;
+      --secondary-green: #7dc5f7;
+      --accent-green: #f4a261;
+      --light-green: #f6f2ff;
+      --dark-text: #1d2436;
+      --light-text: #f7f5ff;
+      --border-color: rgba(91, 96, 230, 0.18);
+      --success: #34d399;
+      --info: #60a5fa;
+      --warning: #fb8122;
+      --bg-start: #f7f4ff;
+      --bg-end: #eef6ff;
+      --panel-bg: rgba(255, 255, 255, 0.88);
+      --panel-border: rgba(91, 96, 230, 0.12);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top left, rgba(125, 197, 247, 0.14), transparent 24%),
+                  radial-gradient(circle at bottom right, rgba(244, 162, 97, 0.12), transparent 20%),
+                  linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+      color: var(--dark-text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* AUTHENTICATION SECTION */
+    .auth-container {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(91, 96, 230, 0.95), rgba(125, 197, 247, 0.9) 100%);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .auth-container.active {
+      display: flex;
+    }
+
+    .login-card {
+      background: var(--panel-bg);
+      border-radius: 32px;
+      padding: 48px;
+      width: 90%;
+      max-width: 450px;
+      box-shadow: 0 30px 60px rgba(91, 96, 230, 0.14), 0 0 0 1px rgba(91, 96, 230, 0.08);
+      animation: slideUp 0.5s ease;
+      border: 1px solid rgba(91, 96, 230, 0.12);
+      backdrop-filter: blur(8px);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .login-header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2rem;
+      color: var(--primary-green);
+      margin-bottom: 8px;
+      font-weight: 800;
+    }
+
+    .login-header p {
+      color: #5e6d9a;
+      font-size: 0.95rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--dark-text);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px 18px;
+      border: 2px solid var(--border-color);
+      border-radius: 16px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--secondary-green);
+      box-shadow: 0 0 0 6px rgba(125, 197, 247, 0.16);
+      background: white;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 12px;
+      letter-spacing: 0.4px;
+      box-shadow: 0 14px 30px rgba(91, 96, 230, 0.18);
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 36px rgba(91, 96, 230, 0.24);
+    }
+
+    /* MAIN CONTENT */
+    .main-content {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .main-content.active {
+      display: block;
+      opacity: 1;
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(135deg, rgba(91, 96, 230, 0.95), rgba(125, 197, 247, 0.95) 100%);
+      color: white;
+      padding: 22px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 12px 40px rgba(93, 100, 255, 0.16);
+      backdrop-filter: blur(14px);
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo::before {
+      content: '🌿';
+      font-size: 1.4rem;
+    }
+
+    nav {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    nav button {
+      background: rgba(255, 255, 255, 0.16);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      padding: 12px 22px;
+      border-radius: 16px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      backdrop-filter: blur(6px);
+    }
+
+    nav button:hover {
+      background: rgba(255, 255, 255, 0.28);
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    nav button.active {
+      background: rgba(255, 255, 255, 0.96);
+      color: var(--primary-green);
+      box-shadow: 0 10px 24px rgba(91, 96, 230, 0.18);
+    }
+
+    .logout-btn {
+      background: linear-gradient(135deg, rgba(91, 96, 230, 0.95), rgba(244, 162, 97, 0.95));
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 16px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      box-shadow: 0 10px 24px rgba(91, 96, 230, 0.18);
+    }
+
+    .logout-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(91, 96, 230, 0.24);
+    }
+
+    /* PAGE SECTIONS */
+    .page {
+      display: none;
+      padding: 40px 24px;
+      min-height: calc(100vh - 80px);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .page.active {
+      display: block;
+      opacity: 1;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .page-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.2rem;
+      color: var(--primary-green);
+      margin-bottom: 12px;
+      font-weight: 800;
+    }
+
+    .page-subtitle {
+      color: #687196;
+      font-size: 1.05rem;
+      margin-bottom: 32px;
+    }
+
+    /* DASHBOARD */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 16px 38px rgba(91, 96, 230, 0.12);
+      border-left: 6px solid var(--accent-green);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(91, 96, 230, 0.08);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 44px rgba(91, 96, 230, 0.16);
+    }
+
+    .stat-card h3 {
+      color: var(--dark-text);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      color: var(--primary-green);
+      font-weight: 800;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* MATERIALS SECTION */
+    .materials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .material-card {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 16px 38px rgba(91, 96, 230, 0.12);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(91, 96, 230, 0.08);
+    }
+
+    .material-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 44px rgba(91, 96, 230, 0.16);
+    }
+
+    .material-card h3 {
+      color: var(--primary-green);
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    .material-props {
+      list-style: none;
+      margin-top: 16px;
+    }
+
+    .material-props li {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-color);
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    .material-props li:last-child {
+      border-bottom: none;
+    }
+
+    .material-props strong {
+      color: var(--primary-green);
+      font-weight: 700;
+    }
+
+    /* CALCULATOR */
+    .calculator-section {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 26px;
+      padding: 34px;
+      box-shadow: 0 18px 44px rgba(91, 96, 230, 0.12);
+      margin-top: 32px;
+      max-width: 500px;
+      border: 1px solid rgba(91, 96, 230, 0.08);
+    }
+
+    .calc-group {
+      margin-bottom: 20px;
+    }
+
+    .calc-group label {
+      display: block;
+      color: var(--dark-text);
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    .calc-group input,
+    .calc-group select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid rgba(91, 96, 230, 0.14);
+      border-radius: 16px;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .calc-group input:focus,
+    .calc-group select:focus {
+      outline: none;
+      border-color: var(--secondary-green);
+      box-shadow: 0 0 0 6px rgba(125, 197, 247, 0.16);
+      background: white;
+    }
+
+    .calc-result {
+      background: linear-gradient(135deg, rgba(244, 162, 97, 0.12), rgba(125, 197, 247, 0.12));
+      border-radius: 18px;
+      padding: 22px;
+      margin-top: 20px;
+      border-left: 6px solid var(--secondary-green);
+      box-shadow: inset 0 0 0 1px rgba(91, 96, 230, 0.08);
+    }
+
+    .calc-result h4 {
+      color: var(--primary-green);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .calc-value {
+      font-size: 1.8rem;
+      color: var(--primary-green);
+      font-weight: 800;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* ORGANIZATIONS */
+    .org-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .org-card {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 18px 42px rgba(91, 96, 230, 0.12);
+      border-top: 6px solid var(--accent-green);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(91, 96, 230, 0.08);
+    }
+
+    .org-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 22px 48px rgba(91, 96, 230, 0.16);
+    }
+
+    .org-card h3 {
+      color: var(--primary-green);
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .org-info {
+      font-size: 0.9rem;
+      color: #666;
+      margin: 12px 0;
+      line-height: 1.7;
+    }
+
+    .org-services {
+      list-style: none;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .org-services li {
+      padding: 6px 0;
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    .org-services li::before {
+      content: '✓ ';
+      color: var(--secondary-green);
+      font-weight: 700;
+      margin-right: 8px;
+    }
+
+    /* AI BOT SECTION */
+    .chat-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .chat-widget {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 32px;
+      padding: 28px;
+      box-shadow: 0 18px 44px rgba(91, 96, 230, 0.14);
+      height: 600px;
+      display: flex;
+      flex-direction: column;
+      max-width: 700px;
+      border: 1px solid rgba(91, 96, 230, 0.08);
+    }
+
+    .chat-header {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.3rem;
+      color: var(--primary-green);
+      font-weight: 800;
+      margin-bottom: 18px;
+      padding-bottom: 18px;
+      border-bottom: 2px solid rgba(91, 96, 230, 0.15);
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-right: 8px;
+    }
+
+    .chat-messages::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .chat-messages::-webkit-scrollbar-track {
+      background: var(--light-green);
+      border-radius: 10px;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: var(--secondary-green);
+      border-radius: 10px;
+    }
+
+    .message {
+      padding: 12px 16px;
+      border-radius: 12px;
+      word-wrap: break-word;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      max-width: 85%;
+    }
+
+    .bot-message {
+      background: var(--light-green);
+      color: var(--dark-text);
+      align-self: flex-start;
+    }
+
+    .user-message {
+      background: var(--secondary-green);
+      color: white;
+      align-self: flex-end;
+    }
+
+    .chat-input-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 14px 18px;
+      border: 2px solid rgba(91, 96, 230, 0.14);
+      border-radius: 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .chat-input:focus {
+      outline: none;
+      border-color: var(--secondary-green);
+      box-shadow: 0 0 0 6px rgba(125, 197, 247, 0.14);
+    }
+
+    .chat-btn {
+      padding: 12px 24px;
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      color: white;
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      box-shadow: 0 12px 26px rgba(91, 96, 230, 0.18);
+    }
+
+    .chat-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 30px rgba(91, 96, 230, 0.24);
+    }
+
+    .card-image {
+      width: 64px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      background: linear-gradient(135deg, rgba(125, 197, 247, 0.18), rgba(91, 96, 230, 0.08));
+      border-radius: 18px;
+      border: 1px solid rgba(91, 96, 230, 0.12);
+    }
+
+    .card-image svg {
+      width: 36px;
+      height: 36px;
+      color: var(--primary-green);
+      fill: currentColor;
+    }
+
+    .org-card .card-image {
+      background: linear-gradient(135deg, rgba(244, 162, 97, 0.18), rgba(91, 96, 230, 0.08));
+    }
+
+    .ai-illustration {
+      width: 100%;
+      max-width: 180px;
+      margin-bottom: 20px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        width: 100%;
+        order: 3;
+      }
+
+      nav button {
+        flex: 1;
+        font-size: 0.8rem;
+        padding: 8px 12px;
+      }
+
+      .page {
+        padding: 20px 16px;
+      }
+
+      .page-title {
+        font-size: 1.6rem;
+      }
+
+      .dashboard-grid,
+      .materials-grid,
+      .org-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .chat-widget {
+        height: 500px;
+      }
+
+      .login-card {
+        padding: 32px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- LOGIN SECTION -->
+  <div class="auth-container active" id="authContainer">
+    <div class="login-card">
+      <div class="login-header">
+        <h1>🌿 EcoConstruct</h1>
+        <p>Green Building Solutions Platform</p>
+      </div>
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" required placeholder="Enter your username">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" required placeholder="Enter your password">
+        </div>
+        <button type="submit" class="login-btn">Login to Platform</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MAIN APPLICATION -->
+  <div class="main-content" id="mainContent">
+    <!-- HEADER -->
+    <header>
+      <div class="header-content">
+        <div class="logo">EcoConstruct Pro</div>
+        <nav>
+          <button class="nav-btn active" onclick="showPage('dashboard')">Dashboard</button>
+          <button class="nav-btn" onclick="showPage('materials')">Materials</button>
+          <button class="nav-btn" onclick="showPage('calculator')">Calculations</button>
+          <button class="nav-btn" onclick="showPage('organizations')">Organizations</button>
+          <button class="nav-btn" onclick="showPage('aibot')">AI Assistant</button>
+        </nav>
+        <button class="logout-btn" onclick="handleLogout()">Logout</button>
+      </div>
+    </header>
+
+    <!-- DASHBOARD PAGE -->
+    <div class="page active" id="dashboard">
+      <div class="container">
+        <h1 class="page-title">Green Building Dashboard</h1>
+        <p class="page-subtitle">Welcome to EcoConstruct Pro - Your complete sustainable building platform</p>
+        
+        <div class="dashboard-grid">
+          <div class="stat-card">
+            <h3>Energy Savings</h3>
+            <div class="stat-value">40-50%</div>
+            <p style="color: #666; margin-top: 8px; font-size: 0.9rem;">Typical reduction with green design</p>
+          </div>
+          <div class="stat-card">
+            <h3>Water Conservation</h3>
+            <div class="stat-value">30-40%</div>
+            <p style="color: #666; margin-top: 8px; font-size: 0.9rem;">Usage reduction through efficiency</p>
+          </div>
+          <div class="stat-card">
+            <h3>Carbon Reduction</h3>
+            <div class="stat-value">20-30%</div>
+            <p style="color: #666; margin-top: 8px; font-size: 0.9rem;">Lifecycle carbon emissions cut</p>
+          </div>
+          <div class="stat-card">
+            <h3>Cost Recovery</h3>
+            <div class="stat-value">5-10 yrs</div>
+            <p style="color: #666; margin-top: 8px; font-size: 0.9rem;">ROI timeline for green buildings</p>
+          </div>
+        </div>
+
+        <div style="background: rgba(255, 255, 255, 0.96); border-radius: 24px; padding: 28px; margin-top: 32px; box-shadow: 0 18px 40px rgba(91, 96, 230, 0.12);">
+          <h2 style="color: var(--primary-green); margin-bottom: 16px; font-family: 'Poppins', sans-serif; font-size: 1.4rem;">Green Building Fundamentals</h2>
+          <p style="color: #666; line-height: 1.8; margin-bottom: 16px;">Green buildings integrate sustainable design principles across site selection, water efficiency, energy performance, materials selection, and indoor environmental quality. Our platform provides comprehensive tools for planning, calculating, and implementing sustainable construction practices.</p>
+          <ul style="list-style: none; margin-top: 16px;">
+            <li style="padding: 10px 0; color: #555;"><strong style="color: var(--primary-green);">📍 Site Selection:</strong> Consider proximity to transit, brownfield redevelopment, and environmental impact.</li>
+            <li style="padding: 10px 0; color: #555;"><strong style="color: var(--primary-green);">💧 Water Efficiency:</strong> Reduce consumption through low-flow fixtures and rainwater harvesting.</li>
+            <li style="padding: 10px 0; color: #555;"><strong style="color: var(--primary-green);">⚡ Energy Performance:</strong> Use renewable energy, insulation, and smart building systems.</li>
+            <li style="padding: 10px 0; color: #555;"><strong style="color: var(--primary-green);">♻️ Materials:</strong> Choose sustainable, recycled, or locally-sourced materials.</li>
+            <li style="padding: 10px 0; color: #555;"><strong style="color: var(--primary-green);">🏥 Indoor Quality:</strong> Ensure proper ventilation, lighting, and non-toxic materials.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- MATERIALS PAGE -->
+    <div class="page" id="materials">
+      <div class="container">
+        <h1 class="page-title">Sustainable Materials Guide</h1>
+        <p class="page-subtitle">Explore eco-friendly building materials with properties and applications</p>
+        
+        <div class="materials-grid">
+          <div class="material-card">
+            <div class="card-image">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><path d="M20 10v44M28 8v48M36 14v42M44 12v44" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M28 18l-8 6M28 28l-8 6M36 22l8 6M36 32l8 6" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+            </div>
+            <h3>🌾 Bamboo</h3>
+            <ul class="material-props">
+              <li><strong>R-Value:</strong> 1.3 per inch</li>
+              <li><strong>Durability:</strong> 20-40 years</li>
+              <li><strong>Carbon Storage:</strong> 12 tons/hectare/year</li>
+              <li><strong>Cost:</strong> $3-8 per sq ft</li>
+              <li><strong>Use:</strong> Flooring, structural elements</li>
+            </ul>
+          </div>
+
+          <div class="material-card">
+            <div class="card-image">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><path d="M20 12h24l12 20-12 20H20l-12-20z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><path d="M32 12v40M20 32h24" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+            </div>
+            <h3>🧱 Recycled Concrete</h3>
+            <ul class="material-props">
+              <li><strong>Strength:</strong> 3,000-4,000 PSI</li>
+              <li><strong>Recycled Content:</strong> 20-70%</li>
+              <li><strong>Carbon Savings:</strong> 65% vs new concrete</li>
+              <li><strong>Cost:</strong> $0.80-1.50 per sq ft</li>
+              <li><strong>Use:</strong> Foundations, flooring</li>
+            </ul>
+          </div>
+
+          <div class="material-card">
+            <div class="card-image">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><path d="M32 12L18 30h10v22h8V30h10z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><path d="M24 28c4-6 8-8 16 0" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+            </div>
+            <h3>🌲 FSC Certified Wood</h3>
+            <ul class="material-props">
+              <li><strong>R-Value:</strong> 1.25 per inch</li>
+              <li><strong>Carbon Sequestration:</strong> Yes</li>
+              <li><strong>Sustainability:</strong> Renewable</li>
+              <li><strong>Cost:</strong> $2-6 per sq ft</li>
+              <li><strong>Use:</strong> Framing, decking, finishes</li>
+            </ul>
+          </div>
+
+          <div class="material-card">
+            <div class="card-image">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="18" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="24" cy="28" r="3" fill="currentColor"/><circle cx="38" cy="22" r="2.5" fill="currentColor"/><circle cx="36" cy="42" r="2.5" fill="currentColor"/></svg>
+            </div>
+            <h3>🔬 Cork</h3>
+            <ul class="material-props">
+              <li><strong>R-Value:</strong> 3.6 per inch</li>
+              <li><strong>Renewable:</strong> Harvested without felling</li>
+              <li><strong>VOC Emissions:</strong> Very low</li>
+              <li><strong>Cost:</strong> $4-8 per sq ft</li>
+              <li><strong>Use:</strong> Insulation, flooring</li>
+            </ul>
+          </div>
+
+          <div class="material-card">
+            <div class="card-image">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><path d="M20 36c0-8 12-16 18-12 6 4 10 10 8 18-2 8-10 12-18 10-6-2-12-8-8-16z" fill="none" stroke="currentColor" stroke-width="4"/><path d="M32 12v12M26 22h12" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+            </div>
+            <h3>🌐 Hempcrete</h3>
+            <ul class="material-props">
+              <li><strong>R-Value:</strong> 0.25-0.35 per inch</li>
+              <li><strong>Breathability:</strong> High (prevents moisture)</li>
+              <li><strong>Carbon Negative:</strong> Sequesters CO2</li>
+              <li><strong>Cost:</strong> $15-20 per sq ft</li>
+              <li><strong>Use:</strong> Non-load bearing walls</li>
+            </ul>
+          </div>
+
+          <div class="material-card">
+            <div class="card-image">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="12" fill="none" stroke="currentColor" stroke-width="4"/><path d="M32 6v10M32 48v10M6 32h10M48 32h10M14 14l8 8M42 42l8 8M14 50l8-8M42 22l8-8" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+            </div>
+            <h3>☀️ Solar Glass</h3>
+            <ul class="material-props">
+              <li><strong>Efficiency:</strong> 15-22%</li>
+              <li><strong>Lifespan:</strong> 25-30 years</li>
+              <li><strong>Energy Payback:</strong> 1-4 years</li>
+              <li><strong>Cost:</strong> $2-3 per watt</li>
+              <li><strong>Use:</strong> Windows, roofing</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CALCULATOR PAGE -->
+    <div class="page" id="calculator">
+      <div class="container">
+        <h1 class="page-title">Green Building Calculator</h1>
+        <p class="page-subtitle">Calculate environmental impact and efficiency metrics for your project</p>
+        
+        <div class="calculator-section">
+          <h3 style="color: var(--primary-green); margin-bottom: 20px; font-family: 'Poppins', sans-serif;">Energy Efficiency Calculator</h3>
+          
+          <div class="calc-group">
+            <label for="buildingArea">Building Area (sq ft)</label>
+            <input type="number" id="buildingArea" placeholder="10000" min="1">
+          </div>
+
+          <div class="calc-group">
+            <label for="efficiency">Efficiency Level</label>
+            <select id="efficiency">
+              <option value="baseline">Standard Building</option>
+              <option value="moderate">Moderate Green (25% savings)</option>
+              <option value="advanced">Advanced Green (40% savings)</option>
+              <option value="zero">Net-Zero Building (60% savings)</option>
+            </select>
+          </div>
+
+          <button onclick="calculateEnergy()" style="width: 100%; padding: 12px; background: linear-gradient(135deg, var(--primary-green), var(--secondary-green)); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; margin-top: 16px;">Calculate</button>
+
+          <div id="energyResult" class="calc-result" style="display: none;">
+            <h4>Annual Energy Consumption</h4>
+            <div class="calc-value" id="energyValue">0 kWh</div>
+            <p style="margin-top: 8px; color: #666; font-size: 0.9rem;">Est. cost: $<span id="energyCost">0</span>/year</p>
+          </div>
+        </div>
+
+        <div class="calculator-section" style="margin-top: 32px;">
+          <h3 style="color: var(--primary-green); margin-bottom: 20px; font-family: 'Poppins', sans-serif;">Carbon Footprint Calculator</h3>
+          
+          <div class="calc-group">
+            <label for="materialType">Primary Material</label>
+            <select id="materialType">
+              <option value="concrete">Reinforced Concrete</option>
+              <option value="steel">Structural Steel</option>
+              <option value="wood">Mass Timber</option>
+              <option value="hybrid">Hybrid (Concrete + Steel)</option>
+            </select>
+          </div>
+
+          <div class="calc-group">
+            <label for="tonnage">Material Tonnage</label>
+            <input type="number" id="tonnage" placeholder="500" min="1">
+          </div>
+
+          <button onclick="calculateCarbon()" style="width: 100%; padding: 12px; background: linear-gradient(135deg, var(--primary-green), var(--secondary-green)); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; margin-top: 16px;">Calculate</button>
+
+          <div id="carbonResult" class="calc-result" style="display: none;">
+            <h4>Carbon Emissions</h4>
+            <div class="calc-value" id="carbonValue">0 tons</div>
+            <p style="margin-top: 8px; color: #666; font-size: 0.9rem;">Equivalent to <span id="carbonEquiv">0</span> car miles</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORGANIZATIONS PAGE -->
+    <div class="page" id="organizations">
+      <div class="container">
+        <h1 class="page-title">Leading Green Building Organizations</h1>
+        <p class="page-subtitle">Certified consultants and partners for sustainable construction</p>
+        
+        <div class="org-grid">
+          <div class="org-card">
+            <div class="card-image">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect x="18" y="16" width="28" height="36" rx="4" fill="none" stroke="currentColor" stroke-width="4"/><path d="M18 32h28M26 20v12M34 20v12M42 20v12" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+            </div>
+            <h3>USGBC (US Green Building Council)</h3>
+            <div class="org-info">
+              <strong>Headquarters:</strong> Washington, D.C., USA<br>
+              <strong>Founded:</strong> 1993<br>
+              <strong>Certification:</strong> LEED
+            </div>
+            <ul class="org-services">
+              <li>LEED Certification and Training</li>
+              <li>Project Consultation</li>
+              <li>Rating System Development</li>
+              <li>Sustainability Standards</li>
+            </ul>
+          </div>
+
+          <div class="org-card">
+            <div class="card-image">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect x="18" y="16" width="28" height="36" rx="4" fill="none" stroke="currentColor" stroke-width="4"/><path d="M18 32h28M26 20v12M34 20v12M42 20v12" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+            </div>
+            <h3>BREEAM (Building Research Establishment)</h3>
+            <div class="org-info">
+              <strong>Headquarters:</strong> Watford, UK<br>
+              <strong>Founded:</strong> 1990<br>
+              <strong>Certification:</strong> BREEAM
+            </div>
+            <ul class="org-services">
+              <li>Building Performance Assessment</li>
+              <li>Sustainability Audits</li>
+              <li>Certification Consulting</li>
+              <li>Environmental Impact Analysis</li>
+            </ul>
+          </div>
+
+          <div class="org-card">
+            <div class="card-image">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect x="18" y="16" width="28" height="36" rx="4" fill="none" stroke="currentColor" stroke-width="4"/><path d="M18 32h28M26 20v12M34 20v12M42 20v12" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+            </div>
+            <h3>AIA (American Institute of Architects)</h3>
+            <div class="org-info">
+              <strong>Headquarters:</strong> Washington, D.C., USA<br>
+              <strong>Founded:</strong> 1857<br>
+              <strong>Focus:</strong> Sustainable Design
+            </div>
+            <ul class="org-services">
+              <li>Architectural Design Services</li>
+              <li>Sustainability Consulting</li>
+              <li>Professional Development</li>
+              <li>Code and Standards Advisory</li>
+            </ul>
+          </div>
+
+          <div class="org-card">
+            <div class="card-image">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect x="18" y="16" width="28" height="36" rx="4" fill="none" stroke="currentColor" stroke-width="4"/><path d="M18 32h28M26 20v12M34 20v12M42 20v12" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+            </div>
+            <h3>DGNB (German Sustainable Building Council)</h3>
+            <div class="org-info">
+              <strong>Headquarters:</strong> Stuttgart, Germany<br>
+              <strong>Founded:</strong> 2007<br>
+              <strong>Certification:</strong> DGNB
+            </div>
+            <ul class="org-services">
+              <li>Holistic Sustainability Certification</li>
+              <li>Quality Management</li>
+              <li>Building Optimization</li>
+              <li>Performance Monitoring</li>
+            </ul>
+          </div>
+
+          <div class="org-card">
+            <div class="card-image">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect x="18" y="16" width="28" height="36" rx="4" fill="none" stroke="currentColor" stroke-width="4"/><path d="M18 32h28M26 20v12M34 20v12M42 20v12" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+            </div>
+            <h3>GBCA (Green Building Council Australia)</h3>
+            <div class="org-info">
+              <strong>Headquarters:</strong> Melbourne, Australia<br>
+              <strong>Founded:</strong> 2002<br>
+              <strong>Certification:</strong> Green Star
+            </div>
+            <ul class="org-services">
+              <li>Green Star Certification</li>
+              <li>Rating System Development</li>
+              <li>Training and Workshops</li>
+              <li>Sustainability Advisory</li>
+            </ul>
+          </div>
+
+          <div class="org-card">
+            <div class="card-image">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect x="18" y="16" width="28" height="36" rx="4" fill="none" stroke="currentColor" stroke-width="4"/><path d="M18 32h28M26 20v12M34 20v12M42 20v12" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+            </div>
+            <h3>GIBE (Green Building Institute Europe)</h3>
+            <div class="org-info">
+              <strong>Headquarters:</strong> Brussels, Belgium<br>
+              <strong>Founded:</strong> 2003<br>
+              <strong>Focus:</strong> European Standards
+            </div>
+            <ul class="org-services">
+              <li>European Compliance Consulting</li>
+              <li>Performance Certification</li>
+              <li>Industry Collaboration</li>
+              <li>Research and Innovation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI BOT PAGE -->
+    <div class="page" id="aibot">
+      <div class="container">
+        <h1 class="page-title">AI Green Building Assistant</h1>
+        <p class="page-subtitle">Expert knowledge on sustainable construction, materials, and environmental impact</p>
+        
+        <div class="chat-container">
+          <div class="ai-illustration">
+            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="60" r="40" fill="rgba(22,147,124,0.18)"/><path d="M44 64c0-8 8-24 16-24s16 16 16 24-8 20-16 20-16-12-16-20z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M60 32v10M50 22l12 12M70 22l-12 12" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M42 74h36" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M46 86h28" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+          </div>
+          <div class="chat-widget">
+            <div class="chat-header">🤖 EcoConstruct AI Expert</div>
+            <div class="chat-messages" id="chatMessages">
+              <div class="message bot-message">Hello! I'm your green building AI assistant. I have expertise in sustainable materials, energy efficiency, water conservation, carbon calculations, certifications (LEED, BREEAM, DGNB), and industry best practices. Ask me anything about green building!</div>
+            </div>
+            <div class="chat-input-row">
+              <input type="text" id="chatInput" class="chat-input" placeholder="Ask about materials, energy, certifications...">
+              <button class="chat-btn" onclick="sendChat()">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Authentication
+    function handleLogin(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      if (username && password) {
+        document.getElementById('authContainer').classList.remove('active');
+        document.getElementById('mainContent').classList.add('active');
+        localStorage.setItem('ecologin', username);
+      }
+    }
+
+    function handleLogout() {
+      if (confirm('Are you sure you want to logout?')) {
+        document.getElementById('authContainer').classList.add('active');
+        document.getElementById('mainContent').classList.remove('active');
+        localStorage.removeItem('ecologin');
+      }
+    }
+
+    // Page Navigation
+    function showPage(pageName) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageName).classList.add('active');
+      
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    // Energy Calculator
+    function calculateEnergy() {
+      const area = parseFloat(document.getElementById('buildingArea').value) || 10000;
+      const efficiency = document.getElementById('efficiency').value;
+      
+      const baselineKWh = area * 15;
+      let consumption;
+      
+      if (efficiency === 'baseline') consumption = baselineKWh;
+      else if (efficiency === 'moderate') consumption = baselineKWh * 0.75;
+      else if (efficiency === 'advanced') consumption = baselineKWh * 0.60;
+      else consumption = baselineKWh * 0.40;
+      
+      const cost = consumption * 0.12;
+      
+      document.getElementById('energyResult').style.display = 'block';
+      document.getElementById('energyValue').textContent = consumption.toLocaleString(undefined, {maximumFractionDigits: 0}) + ' kWh/year';
+      document.getElementById('energyCost').textContent = cost.toLocaleString(undefined, {maximumFractionDigits: 0});
+    }
+
+    // Carbon Calculator
+    function calculateCarbon() {
+      const tonnage = parseFloat(document.getElementById('tonnage').value) || 500;
+      const materialType = document.getElementById('materialType').value;
+      
+      let emissionFactor;
+      if (materialType === 'concrete') emissionFactor = 0.4;
+      else if (materialType === 'steel') emissionFactor = 1.85;
+      else if (materialType === 'wood') emissionFactor = 0.15;
+      else emissionFactor = 0.8;
+      
+      const totalEmissions = tonnage * emissionFactor;
+      const carMiles = totalEmissions * 8700;
+      
+      document.getElementById('carbonResult').style.display = 'block';
+      document.getElementById('carbonValue').textContent = totalEmissions.toLocaleString(undefined, {maximumFractionDigits: 1}) + ' tons CO₂';
+      document.getElementById('carbonEquiv').textContent = carMiles.toLocaleString(undefined, {maximumFractionDigits: 0});
+    }
+
+    // AI Chat
+    const aiKnowledge = {
+      energy: "Energy efficiency in green buildings involves proper insulation (R-value 30-60), high-performance HVAC systems, LED lighting, solar panels (15-22% efficiency), and smart building management systems. Expected savings: 40-50%.",
+      materials: "Sustainable materials include FSC-certified wood (R=1.25/inch), recycled concrete (65% carbon savings), bamboo (R=1.3/inch), cork (R=3.6/inch), hempcrete (carbon negative), and solar glass. Consider embodied carbon and lifecycle assessment.",
+      water: "Water conservation strategies: Low-flow fixtures (1.5-2 GPM), rainwater harvesting (1000+ gallons/year from roof), greywater recycling, drought-resistant landscaping. Can reduce consumption by 30-40%.",
+      leed: "LEED Certification levels: Certified (40-49 points), Silver (50-59), Gold (60-79), Platinum (80+). Covers: Sustainable sites, water efficiency, energy, materials, indoor quality. Costs $0.20-0.50 per sq ft.",
+      breeam: "BREEAM rates buildings 1-5 stars across 10 categories: Energy, Health, Materials, Waste, Land, Pollution, Transport, Water, Management, Ecology. Popular in Europe and Asia-Pacific.",
+      carbon: "Building lifecycle carbon includes: Embodied (materials, construction), Operational (40-50 years), End-of-life. Reduce through: Material selection, efficient systems, renewable energy, and recycling.",
+      solar: "Solar PV systems: Typical efficiency 15-22%, lifespan 25-30 years, energy payback 1-4 years. Average cost $2-3/watt. 1 kW produces ~1.2-1.5 MWh/year depending on location.",
+      hvac: "HVAC optimization: Use heat recovery ventilation (HRV), variable refrigerant flow (VRF), thermal mass, natural ventilation. Energy recovery can improve efficiency by 20-30%.",
+      insulation: "Insulation R-values: Walls R-15-30, Roofs R-30-60, Basements R-10-20. Cork R=3.6/in, Fiberglass R=3.2/in, Spray foam R=6-7/in. Higher values = better performance.",
+      default: "I can help with energy efficiency, sustainable materials, water conservation, carbon calculations, LEED/BREEAM/DGNB certifications, HVAC systems, insulation, solar technology, and green building best practices. What would you like to know?"
+    };
+
+    function sendChat() {
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      if (!message) return;
+
+      const messagesDiv = document.getElementById('chatMessages');
+      const userMsg = document.createElement('div');
+      userMsg.className = 'message user-message';
+      userMsg.textContent = message;
+      messagesDiv.appendChild(userMsg);
+      input.value = '';
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+      setTimeout(() => {
+        const botMsg = document.createElement('div');
+        botMsg.className = 'message bot-message';
+        botMsg.textContent = getAIResponse(message);
+        messagesDiv.appendChild(botMsg);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }, 400);
+    }
+
+    function getAIResponse(text) {
+      const lower = text.toLowerCase();
+      if (lower.includes('energy')) return aiKnowledge.energy;
+      if (lower.includes('material') || lower.includes('sustainable')) return aiKnowledge.materials;
+      if (lower.includes('water')) return aiKnowledge.water;
+      if (lower.includes('leed')) return aiKnowledge.leed;
+      if (lower.includes('breeam')) return aiKnowledge.breeam;
+      if (lower.includes('carbon')) return aiKnowledge.carbon;
+      if (lower.includes('solar')) return aiKnowledge.solar;
+      if (lower.includes('hvac') || lower.includes('ventilation')) return aiKnowledge.hvac;
+      if (lower.includes('insulation') || lower.includes('r-value')) return aiKnowledge.insulation;
+      return aiKnowledge.default;
+    }
+
+    // Check login on load
+    window.addEventListener('load', () => {
+      if (localStorage.getItem('ecologin')) {
+        document.getElementById('authContainer').classList.remove('active');
+        document.getElementById('mainContent').classList.add('active');
+      }
+    });
+  </script>
+</body>
+</html>
